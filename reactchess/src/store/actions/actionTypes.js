@@ -1,0 +1,11 @@
+export const MOVE_PIECE = 'MOVE_PIECE';
+export const SELECT_PIECE = 'SELECT_PIECE';
+export const SELECT_MOVE = 'SELECT_MOVE';
+export const CLEAR_SELECTION = 'CLEAR_SELECTION';
+export const GAME_ALERT = 'GAME_ALERT';
+export const CLEAR_ALERT = 'CLEAR_ALERT';
+export const UPDATE_BOARD = 'UPDATE_BOARD';
+export const TAKE_PIECE = 'TAKE_PIECE';
+export const HOVERED_PIECE = 'HOVERED_PIECE';
+export const CLEAR_HOVER = 'CLEAR_HOVER';
+export const CHANGE_PLAYER = 'CHANGE_PLAYER ';

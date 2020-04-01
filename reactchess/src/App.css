@@ -1,0 +1,250 @@
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+
+body {
+  margin: 0px;
+  padding: 0px;
+  background-color: antiquewhite;
+}
+header {
+  text-align: center;
+  margin-bottom: 15px;
+  background-color: rgb(166, 166, 250);
+}
+
+.primary-header {
+  font-size: 2.5em;
+  padding-top: 10px;
+  display: inline-flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.chess-logo {
+  vertical-align: bottom;
+  padding-top: 8px;
+  height: 2.8em;
+}
+
+.board-square {
+  height: 55px;
+  width: 55px;
+  text-align: center;
+  color: grey;
+  padding: none;
+  margin: none;
+  box-sizing: border-box;
+}
+
+.border-Square {
+  background-color: lightgray;
+  color: black;
+  border: 1px darkgray solid;
+  box-sizing: border-box;
+}
+
+.white {
+  background-color: rgb(226, 217, 164);
+}
+
+.white:hover {
+  background-color: rgb(243, 234, 181);
+}
+
+.black {
+  background-color: rgb(92, 92, 92);
+}
+
+.black:hover {
+  background-color: rgb(107, 107, 107);
+}
+
+.secondary-title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+
+.selected {
+  border: 5px rgb(204, 201, 37) solid;
+  box-sizing: border-box;
+}
+
+table {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+
+td,
+tr {
+  border: none;
+  font-weight: bold;
+  vertical-align: middle;
+}
+
+.gameboard {
+  justify-self: center;
+}
+
+/* ~~~~~~`Main Interface`~~~~~~~~~*/
+
+.main {
+  background-color: rgb(255, 249, 242);
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.white-score {
+  grid-column: 1;
+  grid-row: 1;
+}
+.black-score {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.main-board-area {
+  display: flex;
+  justify-content: center;
+  grid-column: 2;
+  grid-row: 1 / span 2;
+}
+
+/*~~~~~~~~~Piece info area ~~~~~~~ */
+
+.piece-info-box {
+  grid-column: 3;
+  grid-row: 1;
+  outline: 1px black solid;
+}
+
+.place-piece-info-box {
+  grid-column: 3;
+  grid-row: 2;
+  outline: 1px black solid;
+}
+
+.piece-location {
+  position: relative;
+  padding-top: 35%;
+}
+
+.white-info {
+  background-color: white;
+  color: black;
+  height: 100%;
+}
+
+.black-info {
+  background-color: rgb(107, 107, 107);
+  color: white;
+  height: 100%;
+}
+
+/*~~~~~~~~~~~~~Alerts/Actions ~~~~~~~~~~~~~~*/
+.game-action-box {
+  grid-column: 2;
+  grid-row: 3;
+  outline: 1px black solid;
+}
+
+.game-message {
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  font-size: 1.8em;
+  padding-top: 1.2em;
+}
+
+.red {
+  color: red;
+}
+
+.green {
+  color: green;
+}
+
+/*~~~~~~~~~~~Taken Lists ~~~~~~~~~~*/
+
+.score-card {
+  text-align: center;
+  padding: 1.2em;
+  outline: 1px black solid;
+}
+
+.score-header {
+  text-transform: capitalize;
+  font-size: 1em;
+  padding-top: 10px;
+}
+
+.piece-list {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.piece-item {
+  height: 40px;
+  width: 40px;
+}
+
+/*~~~~~~~~~~Pieces ~~~~~~~~~~~~~~~~*/
+
+.white-pawn {
+  background-image: url('./store/pieces/chessIcons/whitePawn.png');
+  background-size: contain;
+}
+.white-rook {
+  background-image: url('./store/pieces/chessIcons/whiteRook.png');
+  background-size: contain;
+}
+.white-bishop {
+  background-image: url('./store/pieces/chessIcons/whiteBishop.png');
+  background-size: contain;
+}
+.white-knight {
+  background-image: url('./store/pieces/chessIcons/whiteKnight.png');
+  background-size: contain;
+}
+.white-king {
+  background-image: url('./store/pieces/chessIcons/whiteKing.png');
+  background-size: contain;
+}
+.white-queen {
+  background-image: url('./store/pieces/chessIcons/whiteQueen.png');
+  background-size: contain;
+}
+.black-pawn {
+  background-image: url('./store/pieces/chessIcons/blackPawn.png');
+  background-size: contain;
+}
+.black-rook {
+  background-image: url('./store/pieces/chessIcons/blackRook.png');
+  background-size: contain;
+}
+.black-bishop {
+  background-image: url('./store/pieces/chessIcons/blackBishop.png');
+  background-size: contain;
+}
+.black-knight {
+  background-image: url('./store/pieces/chessIcons/blackKnight.png');
+  background-size: contain;
+}
+.black-king {
+  background-image: url('./store/pieces/chessIcons/blackKing.png');
+  background-size: contain;
+}
+.black-queen {
+  background-image: url('./store/pieces/chessIcons/blackQueen.png');
+  background-size: contain;
+}
