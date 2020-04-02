@@ -10,6 +10,7 @@ import {
 import { moveable } from '../../utils/moveable';
 import { takePiece } from '../../utils/takePiece';
 import { board } from '../pieces/startingBoard';
+import { squareVisualSelector } from '../../utils/squareVisualSelector';
 
 const initialState = {
   selectedSquare: [null, null],
@@ -25,27 +26,9 @@ export default (state = initialState, action) => {
   const { type, payload } = action;
   switch (type) {
     case CLEAR_SELECTION:
-      if (state.selectedSquare[0] && state.selectedSquare[1]) {
-        document
-          .getElementById(
-            `sq-${state.selectedSquare[0]}${state.selectedSquare[1]}`
-          )
-          .classList.remove('selected');
-      }
-      return {
-        ...state,
-        selectedSquare: [null, null],
-        selectedPiece: null
-      };
+      return squareVisualSelector(state, CLEAR_SELECTION, payload);
     case SELECT_PIECE:
-      document
-        .getElementById(`sq-${payload.row}${payload.column}`)
-        .classList.add('selected');
-      return {
-        ...state,
-        selectedSquare: [payload.row, payload.column],
-        selectedPiece: board[payload.row][payload.column]
-      };
+      return squareVisualSelector(state, SELECT_PIECE, payload);
     case HOVERED_PIECE:
       return {
         ...state,
@@ -55,25 +38,9 @@ export default (state = initialState, action) => {
     case CLEAR_HOVER:
       return { ...state, hoveredPiece: null, hoveredSquare: [null, null] };
     case SELECT_MOVE:
-      const moved = moveable(
-        state.board,
-        state.selectedSquare,
-        state.selectedPiece,
-        payload
-      );
-      if (moved.moved) {
-        console.log('moved');
-        console.log(moved);
-        return { ...state, board: moved.board };
-      }
-      console.log('didnt move');
-      return {
-        ...state
-      };
-
+      return moveable(state, payload);
     case TAKE_PIECE:
       return takePiece(state, payload);
-
     default:
       return state;
   }

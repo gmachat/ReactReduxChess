@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -19,7 +19,10 @@ const HoveredPieceInfo = ({ hoveredPiece, hoveredSquare, selectedSquare }) => {
   } else if (hoveredPiece) {
     return (
       <div className={`piece-location`}>
-        <h3 className="secondary-title"> To: {hoveredPiece.name}</h3>
+        <h3 className="secondary-title">
+          {' '}
+          {selectedSquare[0] !== null && 'To:'} {hoveredPiece.name}
+        </h3>
         <div className="secondary-title ">
           ( Square: {letters[hoveredSquare[0]]}
           {parseInt(hoveredSquare[1]) + 1})
@@ -30,7 +33,8 @@ const HoveredPieceInfo = ({ hoveredPiece, hoveredSquare, selectedSquare }) => {
     return (
       <div className={`piece-location`}>
         <div className="secondary-title ">
-          To Square: {letters[hoveredSquare[0]]}
+          {selectedSquare[0] !== null && 'To:'} Square:{' '}
+          {letters[hoveredSquare[0]]}
           {parseInt(hoveredSquare[1]) + 1}
         </div>
       </div>

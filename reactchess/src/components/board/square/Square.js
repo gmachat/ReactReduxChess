@@ -31,7 +31,8 @@ const Square = ({
   const piece = board[row][column] ? board[row][column] : null;
   const onClick = event => {
     clearAlert();
-
+    const targetSquare =
+      board[event.target.dataset.row][event.target.dataset.column];
     //clears selection if the newly clicked square is already highlighted
     if (`${selectedSquare[0]}${selectedSquare[1]}` === `${row}${column}`) {
       clearSelection(event.target);
@@ -40,24 +41,18 @@ const Square = ({
     //if thre is already a highlighted square and a new square is clicked
     else if (selectedSquare[0] !== null) {
       //if the new square is empty, move the piece there
-      if (
-        board[event.target.dataset.row][event.target.dataset.column] === null
-      ) {
+      if (targetSquare === null) {
         selectMove(event.target);
         clearSelection(event.target);
         clearHover();
         //if a square is selected, but empty, select a new square
-      } else if (
-        board[event.target.dataset.row][event.target.dataset.column] !== null &&
-        selectedPiece === null
-      ) {
+      } else if (targetSquare !== null && selectedPiece === null) {
         selectPiece(event.target);
         // Present an error if a piece trys to land on the same space of another piece of that color
       } else if (
-        board[event.target.dataset.row][event.target.dataset.column] !== null &&
+        targetSquare !== null &&
         selectedPiece !== null &&
-        selectedPiece.color ===
-          board[event.target.dataset.row][event.target.dataset.column].color
+        selectedPiece.color === targetSquare.color
       ) {
         gameAlert({
           message: 'You can not place your piece here!',
@@ -68,19 +63,23 @@ const Square = ({
         clearHover();
         //Present if a piece of an opposite color "Takes" a space from that color
       } else if (
-        board[event.target.dataset.row][event.target.dataset.column] !== null &&
+        targetSquare !== null &&
         selectedPiece !== null &&
-        selectedPiece.color !==
-          board[event.target.dataset.row][event.target.dataset.column].color
+        selectedPiece.color !== targetSquare.color
       ) {
-        gameAlert({
-          message: `${selectedPiece.name} takes ${
-            board[event.target.dataset.row][event.target.dataset.column].name
-          }`,
-          color: 'green'
-        });
+        const defender = targetSquare;
         setTimeout(clearAlert, 5000);
         takePiece(event.target, selectedPiece);
+        defender !==
+        board[event.target.dataset.row][event.target.dataset.column]
+          ? gameAlert({
+              message: `${selectedPiece.name} takes ${defender.name}`,
+              color: 'green'
+            })
+          : gameAlert({
+              message: `You cannot attack in that way`,
+              color: 'red'
+            });
         clearSelection(event.target);
         hoveredPiece(event.target);
       }

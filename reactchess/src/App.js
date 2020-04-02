@@ -14,7 +14,11 @@ function App() {
         <h1 className="primary-header">React-Redux Chess</h1>
         <span>
           {' '}
-          <img src={blackKnight} className="chess-logo" />{' '}
+          <img
+            src={blackKnight}
+            className="chess-logo"
+            alt="A black knight chess piece"
+          />{' '}
         </span>
       </header>
 

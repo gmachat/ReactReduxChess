@@ -1,108 +1,97 @@
 //row and column are destructured from the payload containing the target square
 
-export const moveable = (
-  board,
-  selectedSquare,
-  selectedPiece,
-  { row, column }
-) => {
+export const moveable = (state, payload) => {
+  const { board, selectedSquare, selectedPiece } = state;
+  const { row, column } = payload;
   const newBoard = [...board];
   const selectedSquareRow = parseInt(selectedSquare[0]);
   const selectedSquareColumn = parseInt(selectedSquare[1]);
-  //if that square is not currently occupied
-  if (newBoard[row][column] === null) {
-    switch (selectedPiece.name.split(' ')[1]) {
-      case 'Pawn':
-        let backwards =
-          selectedPiece.color === 'white'
-            ? selectedSquareRow < row
-            : selectedSquareRow > row;
-        if (
-          (Math.abs(row - selectedSquareRow) === 1 ||
-            (Math.abs(row - selectedSquareRow) === 2 &&
-              selectedPiece.hasMoved === false)) &&
-          column - selectedSquareColumn === 0 &&
-          backwards
-        ) {
-          selectedPiece.hasMoved = true;
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board, moved: true };
-        } else {
-          return { newBoard, moved: false };
-        }
-      case 'Rook':
-        if (
-          parseInt(row) === selectedSquareRow ||
-          parseInt(column) === selectedSquareColumn
-        ) {
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board };
-        } else {
-          return { newBoard, moved: false };
-        }
-      case 'Knight':
-        if (
+  const movePieceSpot = () => {
+    newBoard[row][column] = selectedPiece;
+    newBoard[selectedSquare[0]][selectedSquare[1]] = null;
+  };
+  const moveOneVertical =
+    Math.abs(row - selectedSquareRow) === 1 &&
+    Math.abs(column - selectedSquareColumn) === 0;
+  const moveOneHorizontal =
+    Math.abs(column - selectedSquareColumn) === 1 &&
+    Math.abs(row - selectedSquareRow) === 0;
+  const moveDiagonal =
+    Math.abs(row - selectedSquareRow) ===
+    Math.abs(column - selectedSquareColumn);
+  const moveNSEW =
+    parseInt(row) === selectedSquareRow ||
+    parseInt(column) === selectedSquareColumn;
+  const moveDiagonalSingle =
+    Math.abs(row - selectedSquareRow) === 1 &&
+    Math.abs(column - selectedSquareColumn) === 1;
+
+  switch (selectedPiece.name.split(' ')[1]) {
+    case 'Pawn':
+      let backwards =
+        selectedPiece.color === 'white'
+          ? selectedSquareRow < row
+          : selectedSquareRow > row;
+      if (
+        (moveOneVertical ||
           (Math.abs(row - selectedSquareRow) === 2 &&
-            Math.abs(column - selectedSquareColumn) === 1) ||
-          (Math.abs(row - selectedSquareRow) === 1 &&
-            Math.abs(column - selectedSquareColumn) === 2)
-        ) {
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board };
-        } else {
-          return { newBoard, moved: false };
-        }
+            selectedPiece.hasMoved === false)) &&
+        column - selectedSquareColumn === 0 &&
+        backwards
+      ) {
+        selectedPiece.hasMoved = true;
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
+    case 'Rook':
+      if (moveNSEW) {
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
+    case 'Knight':
+      if (
+        (Math.abs(row - selectedSquareRow) === 2 &&
+          Math.abs(column - selectedSquareColumn) === 1) ||
+        (Math.abs(row - selectedSquareRow) === 1 &&
+          Math.abs(column - selectedSquareColumn) === 2)
+      ) {
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
 
-      case 'Bishop':
-        if (
-          Math.abs(row - selectedSquareRow) ===
-          Math.abs(column - selectedSquareColumn)
-        ) {
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board };
-        } else {
-          return { newBoard, moved: false };
-        }
-      case 'King':
-        if (
-          (Math.abs(row - selectedSquareRow) === 1 &&
-            Math.abs(column - selectedSquareColumn) === 1) ||
-          Math.abs(row - selectedSquareRow) === 1 ||
-          Math.abs(column - selectedSquareColumn) === 1
-        ) {
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board };
-        } else {
-          return { newBoard, moved: false };
-        }
-
-      case 'Queen':
-        if (
-          Math.abs(row - selectedSquareRow) ===
-            Math.abs(column - selectedSquareColumn) ||
-          parseInt(row) === selectedSquareRow ||
-          parseInt(column) === selectedSquareColumn
-        ) {
-          newBoard[selectedSquare[0]][selectedSquare[1]] = null;
-          newBoard[row][column] = selectedPiece;
-          return { board: board };
-        } else {
-          return { newBoard, moved: false };
-        }
-      default:
-        console.log('empty');
-        break;
-    }
-
-    return newBoard;
-  } else if (newBoard[row][column] !== null) {
-    console.log('you must attack right now');
+    case 'Bishop':
+      if (moveDiagonal) {
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
+    case 'King':
+      if (moveDiagonalSingle || moveOneVertical || moveOneHorizontal) {
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
+    case 'Queen':
+      if (moveNSEW || moveDiagonal) {
+        movePieceSpot();
+        return { ...state, board: board };
+      } else {
+        return { ...state, board: newBoard };
+      }
+    default:
+      console.log('empty');
+      break;
   }
+
+  return { ...state, board: newBoard };
 
   // board[selectedSquare[0]][selectedSquare[1]]
 };
