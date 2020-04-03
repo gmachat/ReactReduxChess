@@ -1,3 +1,6 @@
+import { movementChecks } from '../moveable/movementChecks';
+import collisionDetector from '../moveable/collisionDetection';
+
 export const takePiece = (state, payload) => {
   let newTaken;
   const {
@@ -9,25 +12,17 @@ export const takePiece = (state, payload) => {
   } = state;
   let newBoard = [...board];
   const { row, column } = payload.targetPiece;
-  const selectedSquareRow = parseInt(selectedSquare[0]);
-  const selectedSquareColumn = parseInt(selectedSquare[1]);
   const taken = newBoard[row][column];
+  const {
+    moveOneVertical,
+    moveOneHorizontal,
+    moveDiagonal,
+    moveNSEW,
+    moveDiagonalSingle,
+    selectedSquareRow,
+    selectedSquareColumn
+  } = movementChecks(state, payload.targetPiece);
 
-  const moveOneVertical =
-    Math.abs(row - selectedSquareRow) === 1 &&
-    Math.abs(column - selectedSquareColumn) === 0;
-  const moveOneHorizontal =
-    Math.abs(column - selectedSquareColumn) === 1 &&
-    Math.abs(row - selectedSquareRow) === 0;
-  const moveDiagonal =
-    Math.abs(row - selectedSquareRow) ===
-    Math.abs(column - selectedSquareColumn);
-  const moveNSEW =
-    parseInt(row) === selectedSquareRow ||
-    parseInt(column) === selectedSquareColumn;
-  const moveDiagonalSingle =
-    Math.abs(row - selectedSquareRow) === 1 &&
-    Math.abs(column - selectedSquareColumn) === 1;
   const takePieceSpot = () => {
     newBoard[row][column] = selectedPiece;
     newBoard[selectedSquare[0]][selectedSquare[1]] = null;
@@ -47,6 +42,7 @@ export const takePiece = (state, payload) => {
           ? selectedSquareRow < row
           : selectedSquareRow > row;
       if (moveDiagonalSingle && backwards) {
+        if (collisionDetector(state, payload.targetPiece)) return { ...state };
         selectedPiece.hasMoved = true;
         return takePieceSpot();
       } else {
@@ -54,6 +50,7 @@ export const takePiece = (state, payload) => {
       }
     case 'Rook':
       if (moveNSEW) {
+        if (collisionDetector(state, payload.targetPiece)) return { ...state };
         return takePieceSpot();
       } else {
         return { ...state, newBoard, moved: false };
@@ -71,6 +68,7 @@ export const takePiece = (state, payload) => {
       }
     case 'Bishop':
       if (moveDiagonal) {
+        if (collisionDetector(state, payload.targetPiece)) return { ...state };
         return takePieceSpot();
       } else {
         return { ...state, newBoard, moved: false };
@@ -83,6 +81,7 @@ export const takePiece = (state, payload) => {
       }
     case 'Queen':
       if (moveNSEW || moveDiagonal) {
+        if (collisionDetector(state, payload.targetPiece)) return { ...state };
         return takePieceSpot();
       } else {
         return { ...state, newBoard, moved: false };

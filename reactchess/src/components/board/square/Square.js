@@ -2,14 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectPiece } from '../../../store/actions/selectPiece';
-import { clearSelection } from '../../../store/actions/clearSelection';
-import { selectMove } from '../../../store/actions/selectMove';
-import { gameAlert } from '../../../store/actions/gameAlert';
-import { clearAlert } from '../../../store/actions/clearAlert';
-import { takePiece } from '../../../store/actions/takePiece';
-import { hoveredPiece } from '../../../store/actions/hoveredPiece';
-import { clearHover } from '../../../store/actions/clearHover';
+import {
+  selectPiece,
+  clearSelection,
+  selectMove,
+  gameAlert,
+  clearAlert,
+  takePiece,
+  hoveredPiece,
+  clearHover
+} from '../../../store/actions';
+import { conditionals } from './conditionals';
 
 const Square = ({
   initialColor,
@@ -33,27 +36,36 @@ const Square = ({
     clearAlert();
     const targetSquare =
       board[event.target.dataset.row][event.target.dataset.column];
+    const conditional = conditionals(
+      selectedSquare,
+      targetSquare,
+      selectedPiece,
+      row,
+      column
+    );
     //clears selection if the newly clicked square is already highlighted
-    if (`${selectedSquare[0]}${selectedSquare[1]}` === `${row}${column}`) {
+    if (conditional.clickedOnEmptySelf) {
       clearSelection(event.target);
       clearHover();
     }
     //if thre is already a highlighted square and a new square is clicked
-    else if (selectedSquare[0] !== null) {
+    else if (conditional.squareIsSelected) {
       //if the new square is empty, move the piece there
-      if (targetSquare === null) {
+      if (conditional.squareAndTargetEmpty) {
+        //if both are empty switch squares
+        clearSelection(event.target);
+        selectMove(event.target);
+        clearHover();
+        //if the next target is empty clear the target
+      } else if (conditional.targetEmpty) {
         selectMove(event.target);
         clearSelection(event.target);
         clearHover();
         //if a square is selected, but empty, select a new square
-      } else if (targetSquare !== null && selectedPiece === null) {
+      } else if (conditional.selectNewPiece) {
         selectPiece(event.target);
         // Present an error if a piece trys to land on the same space of another piece of that color
-      } else if (
-        targetSquare !== null &&
-        selectedPiece !== null &&
-        selectedPiece.color === targetSquare.color
-      ) {
+      } else if (conditional.sameSquareAsAlly) {
         gameAlert({
           message: 'You can not place your piece here!',
           color: 'red'
@@ -62,12 +74,9 @@ const Square = ({
         clearSelection(event.target);
         clearHover();
         //Present if a piece of an opposite color "Takes" a space from that color
-      } else if (
-        targetSquare !== null &&
-        selectedPiece !== null &&
-        selectedPiece.color !== targetSquare.color
-      ) {
+      } else if (conditional.clickedOnEnemySquare) {
         const defender = targetSquare;
+        console.log(defender);
         setTimeout(clearAlert, 5000);
         takePiece(event.target, selectedPiece);
         defender !==
@@ -84,10 +93,7 @@ const Square = ({
         hoveredPiece(event.target);
       }
       //Use to get the first square selected
-    } else if (
-      selectedSquare &&
-      `${selectedSquare[0]}${selectedSquare[1]}` !== `${row}${column}`
-    ) {
+    } else if (selectedSquare && conditional.selectFirstSquare) {
       selectPiece(event.target);
       clearHover();
     }

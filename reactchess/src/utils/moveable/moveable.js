@@ -1,32 +1,26 @@
 //row and column are destructured from the payload containing the target square
+import collisionDetection from './collisionDetection';
+import { movementChecks } from './movementChecks';
 
 export const moveable = (state, payload) => {
   const { board, selectedSquare, selectedPiece } = state;
   const { row, column } = payload;
   const newBoard = [...board];
-  const selectedSquareRow = parseInt(selectedSquare[0]);
-  const selectedSquareColumn = parseInt(selectedSquare[1]);
+  const {
+    moveOneVertical,
+    moveOneHorizontal,
+    moveDiagonal,
+    moveNSEW,
+    moveDiagonalSingle,
+    selectedSquareRow,
+    selectedSquareColumn
+  } = movementChecks(state, payload);
   const movePieceSpot = () => {
     newBoard[row][column] = selectedPiece;
     newBoard[selectedSquare[0]][selectedSquare[1]] = null;
   };
-  const moveOneVertical =
-    Math.abs(row - selectedSquareRow) === 1 &&
-    Math.abs(column - selectedSquareColumn) === 0;
-  const moveOneHorizontal =
-    Math.abs(column - selectedSquareColumn) === 1 &&
-    Math.abs(row - selectedSquareRow) === 0;
-  const moveDiagonal =
-    Math.abs(row - selectedSquareRow) ===
-    Math.abs(column - selectedSquareColumn);
-  const moveNSEW =
-    parseInt(row) === selectedSquareRow ||
-    parseInt(column) === selectedSquareColumn;
-  const moveDiagonalSingle =
-    Math.abs(row - selectedSquareRow) === 1 &&
-    Math.abs(column - selectedSquareColumn) === 1;
 
-  switch (selectedPiece.name.split(' ')[1]) {
+  switch (selectedPiece && selectedPiece.name.split(' ')[1]) {
     case 'Pawn':
       let backwards =
         selectedPiece.color === 'white'
@@ -39,6 +33,7 @@ export const moveable = (state, payload) => {
         column - selectedSquareColumn === 0 &&
         backwards
       ) {
+        if (collisionDetection(state, payload)) return { ...state };
         selectedPiece.hasMoved = true;
         movePieceSpot();
         return { ...state, board: board };
@@ -47,9 +42,11 @@ export const moveable = (state, payload) => {
       }
     case 'Rook':
       if (moveNSEW) {
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
         return { ...state, board: board };
       } else {
+        console.log("can't move that way dawg");
         return { ...state, board: newBoard };
       }
     case 'Knight':
@@ -67,6 +64,7 @@ export const moveable = (state, payload) => {
 
     case 'Bishop':
       if (moveDiagonal) {
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
         return { ...state, board: board };
       } else {
@@ -81,17 +79,15 @@ export const moveable = (state, payload) => {
       }
     case 'Queen':
       if (moveNSEW || moveDiagonal) {
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
         return { ...state, board: board };
       } else {
         return { ...state, board: newBoard };
       }
     default:
-      console.log('empty');
+      // return { ...state, selectedSquare: [row, column] };
       break;
   }
-
-  return { ...state, board: newBoard };
-
-  // board[selectedSquare[0]][selectedSquare[1]]
+  return { ...state, selectedSquare: [row, column] };
 };

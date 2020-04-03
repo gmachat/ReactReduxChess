@@ -1,4 +1,5 @@
 import { GAME_ALERT } from './actionTypes';
+
 export const gameAlert = alert => dispatch => {
   return dispatch({
     type: GAME_ALERT,

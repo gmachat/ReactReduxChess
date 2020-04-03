@@ -7,8 +7,8 @@ import {
   CLEAR_HOVER
 } from '../actions/actionTypes';
 
-import { moveable } from '../../utils/moveable';
-import { takePiece } from '../../utils/takePiece';
+import { moveable } from '../../utils/moveable/moveable';
+import { takePiece } from '../../utils/takeable/takePiece';
 import { board } from '../pieces/startingBoard';
 import { squareVisualSelector } from '../../utils/squareVisualSelector';
 
