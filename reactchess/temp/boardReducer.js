@@ -4,13 +4,13 @@ import {
   TAKE_PIECE,
   CLEAR_SELECTION,
   HOVERED_PIECE,
-  CLEAR_HOVER,
-  UPDATE_SCORE
+  CLEAR_HOVER
 } from '../actions/actionTypes';
 
+import { moveable } from '../../utils/moveable/moveable';
+import { takePiece } from '../../utils/takeable/takePiece';
 import { board } from '../pieces/startingBoard';
 import { squareVisualSelector } from '../../utils/squareVisualSelector';
-import { boardChange } from '../../utils/boardChange';
 
 const initialState = {
   selectedSquare: [null, null],
@@ -38,16 +38,9 @@ export default (state = initialState, action) => {
     case CLEAR_HOVER:
       return { ...state, hoveredPiece: null, hoveredSquare: [null, null] };
     case SELECT_MOVE:
-      return boardChange(state, payload);
+      return moveable(state, payload);
     case TAKE_PIECE:
-      return boardChange(state, payload.targetPiece);
-    case UPDATE_SCORE:
-      return {
-        ...state,
-        board: payload.newBoard,
-        takenWhitePieces: payload.takenWhitePieces,
-        takenBlackPieces: payload.takenBlackPieces
-      };
+      return takePiece(state, payload);
     default:
       return state;
   }

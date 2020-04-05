@@ -9,3 +9,6 @@ export const TAKE_PIECE = 'TAKE_PIECE';
 export const HOVERED_PIECE = 'HOVERED_PIECE';
 export const CLEAR_HOVER = 'CLEAR_HOVER';
 export const CHANGE_PLAYER = 'CHANGE_PLAYER ';
+export const CHANGE_TURN = 'CHANGE_TURN';
+export const CHOOSE_COLOR = 'CHOOSE_COLOR';
+export const UPDATE_SCORE = 'UPDATE_SCORE';

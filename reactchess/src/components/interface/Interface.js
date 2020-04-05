@@ -7,10 +7,14 @@ import PieceInfo from './PieceInfo/PieceInfo';
 import HoveredPieceInfo from './HoveredPieceInfo/HoveredPieceInfo';
 import GameAction from './GameAction/GameAction';
 import ScoreCard from '../ScoreCard/ScoreCard';
+import GameInfo from '../interface/GameInfo/GameInfo';
 
 const Interface = ({ selectedSquare, selectedPiece, hoveredPiece }) => {
   return (
     <div className="main">
+      <div className="game-info">
+        <GameInfo />
+      </div>
       <div className="white-score score-card">
         <ScoreCard team="white" />
       </div>

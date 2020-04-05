@@ -99,36 +99,42 @@ tr {
   background-color: rgb(255, 249, 242);
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 4fr 4fr 4fr;
+}
+
+/*~~~~~~~game-info~~~~~~~~~~*/
+.game-info {
+  grid-column: 1 / span 3;
+  grid-row: 1;
 }
 
 .white-score {
   grid-column: 1;
-  grid-row: 1;
+  grid-row: 2;
 }
 .black-score {
   grid-column: 1;
-  grid-row: 2;
+  grid-row: 3;
 }
 
 .main-board-area {
   display: flex;
   justify-content: center;
   grid-column: 2;
-  grid-row: 1 / span 2;
+  grid-row: 2 / span 2;
 }
 
 /*~~~~~~~~~Piece info area ~~~~~~~ */
 
 .piece-info-box {
   grid-column: 3;
-  grid-row: 1;
+  grid-row: 2;
   outline: 1px black solid;
 }
 
 .place-piece-info-box {
   grid-column: 3;
-  grid-row: 2;
+  grid-row: 3;
   outline: 1px black solid;
 }
 
@@ -152,7 +158,7 @@ tr {
 /*~~~~~~~~~~~~~Alerts/Actions ~~~~~~~~~~~~~~*/
 .game-action-box {
   grid-column: 2;
-  grid-row: 3;
+  grid-row: 4;
   outline: 1px black solid;
 }
 

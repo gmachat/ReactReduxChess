@@ -1,7 +1,7 @@
 //row and column are destructured from the payload containing the target square
 import collisionDetection from './collisionDetection';
 import { movementChecks } from './movementChecks';
-import { boardCopy } from '../boardCopy';
+import { boardCopy } from './../src/utils/boardCopy';
 
 export const moveable = (state, payload) => {
   const { board, selectedSquare, selectedPiece } = state;
@@ -34,20 +34,21 @@ export const moveable = (state, payload) => {
         column - selectedSquareColumn === 0 &&
         backwards
       ) {
-        if (collisionDetection(state, payload)) return false;
+        if (collisionDetection(state, payload)) return { ...state };
         selectedPiece.hasMoved = true;
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        return { ...state, board: newBoard };
       }
     case 'Rook':
       if (moveNSEW) {
-        if (collisionDetection(state, payload)) return false;
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        console.log("can't move that way dawg");
+        return { ...state, board: newBoard };
       }
     case 'Knight':
       if (
@@ -57,37 +58,37 @@ export const moveable = (state, payload) => {
           Math.abs(column - selectedSquareColumn) === 2)
       ) {
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        return { ...state, board: newBoard };
       }
 
     case 'Bishop':
       if (moveDiagonal) {
-        if (collisionDetection(state, payload)) return false;
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        return { ...state, board: newBoard };
       }
     case 'King':
       if (moveDiagonalSingle || moveOneVertical || moveOneHorizontal) {
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        return { ...state, board: newBoard };
       }
     case 'Queen':
       if (moveNSEW || moveDiagonal) {
-        if (collisionDetection(state, payload)) return false;
+        if (collisionDetection(state, payload)) return { ...state };
         movePieceSpot();
-        return true;
+        return { ...state, board: board };
       } else {
-        return;
+        return { ...state, board: newBoard };
       }
     default:
       // return { ...state, selectedSquare: [row, column] };
       break;
   }
-  return false;
+  return { ...state, selectedSquare: [row, column] };
 };

@@ -11,13 +11,9 @@ import {
   takePiece,
   hoveredPiece,
   clearHover,
-  changePlayer,
-  updateScore
+  changePlayer
 } from '../../../store/actions';
 import { conditionals } from './conditionals';
-import { moveable } from '../../../utils/moveable/moveable';
-import { takeable } from '../../../utils/takeable/takeable';
-import { addScore } from '../../../utils/addScore/addScore';
 
 const Square = ({
   initialColor,
@@ -36,13 +32,10 @@ const Square = ({
   clearAlert,
   takePiece,
   currentPlayer,
-  changePlayer,
-  takenWhitePieces,
-  takenBlackPieces,
-  updateScore
+  changePlayer
 }) => {
   const piece = board[row][column] ? board[row][column] : null;
-  const onClick = async event => {
+  const onClick = event => {
     clearAlert();
     const targetSquare =
       board[event.target.dataset.row][event.target.dataset.column];
@@ -53,18 +46,6 @@ const Square = ({
       row,
       column
     );
-
-    const canBeMoved = moveable(
-      { board, selectedSquare, selectedPiece },
-      { row, column }
-    );
-    let canBeTaken;
-    selectedPiece &&
-      (canBeTaken = takeable(
-        { board, selectedSquare, selectedPiece },
-        { row, column }
-      ));
-
     if (conditional.clickedOnEmptySelf) {
       clearSelection(event.target);
       clearHover();
@@ -74,22 +55,14 @@ const Square = ({
         selectMove(event.target);
         clearHover();
       } else if (conditional.targetEmpty) {
-        if (canBeMoved) {
-          selectMove(event.target);
-          changePlayer(currentPlayer);
-        } else {
-          gameAlert({
-            message: 'You can not place your piece here!',
-            color: 'red'
-          });
-        }
+        selectMove(event.target);
         clearSelection(event.target);
         clearHover();
       } else if (conditional.selectNewPiece) {
         selectPiece(event.target);
       } else if (conditional.sameSquareAsAlly) {
         gameAlert({
-          message: `You can not place your piece here! The ${targetSquare.name} is an ally!`,
+          message: 'You can not place your piece here!',
           color: 'red'
         });
         setTimeout(clearAlert, 4000);
@@ -97,33 +70,23 @@ const Square = ({
         clearHover();
       } else if (conditional.clickedOnEnemySquare) {
         const defender = targetSquare;
-        if (canBeTaken) {
-          updateScore(
-            addScore(
-              {
-                selectedSquare,
-                selectedPiece,
-                board,
-                takenWhitePieces,
-                takenBlackPieces
-              },
-              { row, column }
-            )
-          );
-          takePiece(event.target, selectedPiece);
-          changePlayer(currentPlayer);
-          gameAlert({
-            message: `${selectedPiece.name} takes ${defender.name}`,
-            color: 'green'
-          });
-          setTimeout(clearAlert, 4000);
-        } else {
-          gameAlert({
-            message: `You cannot attack the ${defender.name} from here!`,
-            color: 'red'
-          });
-        }
-        setTimeout(clearAlert, 4000);
+        setTimeout(clearAlert, 5000);
+        takePiece(event.target, selectedPiece);
+        defender !==
+          board[event.target.dataset.row][event.target.dataset.column];
+        console.log(
+          defender !==
+            board[event.target.dataset.row][event.target.dataset.column]
+        )
+          ? gameAlert({
+              message: `${selectedPiece.name} takes ${defender.name}`,
+              color: 'green'
+            })
+          : gameAlert({
+              message: `You cannot attack in that way`,
+              color: 'red'
+            });
+        changePlayer(currentPlayer);
         clearSelection(event.target);
         hoveredPiece(event.target);
       }
@@ -173,10 +136,7 @@ Square.propTypes = {
   clearAlert: PropTypes.func,
   takePiece: PropTypes.func,
   clearHover: PropTypes.func,
-  currentPlayer: PropTypes.string,
-  updateScore: PropTypes.func,
-  takenWhitePieces: PropTypes.array,
-  takenBlackPieces: PropTypes.array
+  currentPlayer: PropTypes.string
 };
 
 const mapStateToProps = state => {
@@ -184,9 +144,7 @@ const mapStateToProps = state => {
     selectedSquare: state.boardReducer.selectedSquare,
     selectedPiece: state.boardReducer.selectedPiece,
     board: state.boardReducer.board,
-    currentPlayer: state.gameReducer.currentPlayer,
-    takenWhitePieces: state.boardReducer.takenWhitePieces,
-    takenBlackPieces: state.boardReducer.takenBlackPieces
+    currentPlayer: state.gameReducer.currentPlayer
   };
 };
 export default connect(mapStateToProps, {
@@ -198,6 +156,5 @@ export default connect(mapStateToProps, {
   takePiece,
   hoveredPiece,
   clearHover,
-  changePlayer,
-  updateScore
+  changePlayer
 })(Square);
