@@ -4,6 +4,7 @@ import { collisionDetectionDiagonal } from './collisionDetectionDiagonal';
 const collisionDetection = (state, payload) => {
   const selectedSquareRow = parseInt(state.selectedSquare[0]);
   const selectedSquareColumn = parseInt(state.selectedSquare[1]);
+
   switch (state.selectedPiece.name.split(' ')[1]) {
     case 'Queen':
       return (
@@ -42,7 +43,7 @@ const collisionDetection = (state, payload) => {
         selectedSquareColumn
       );
     default:
-      return { ...state };
+      return false;
   }
 };
 

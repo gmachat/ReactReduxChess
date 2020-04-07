@@ -35,7 +35,6 @@ export const moveable = (state, payload) => {
         backwards
       ) {
         if (collisionDetection(state, payload)) return false;
-        selectedPiece.hasMoved = true;
         movePieceSpot();
         return true;
       } else {

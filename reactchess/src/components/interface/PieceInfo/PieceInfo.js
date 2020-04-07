@@ -4,11 +4,20 @@ import { connect } from 'react-redux';
 
 const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
 
-const PieceInfo = ({ selectedPiece, selectedSquare, defaultMessage }) => {
+const PieceInfo = ({
+  selectedPiece,
+  selectedSquare,
+  defaultMessage,
+  currentPlayer
+}) => {
+  console.log(currentPlayer);
   if (selectedPiece) {
     return (
       <div className={`piece-location`}>
-        <h3 className="secondary-title">Move {selectedPiece.name}</h3>
+        <h3 className="secondary-title">
+          {selectedPiece.color === currentPlayer.toLowerCase() && 'Move'}{' '}
+          {selectedPiece.name}
+        </h3>
         <div className="secondary-title ">
           (Square: {letters[selectedSquare[0]]}
           {parseInt(selectedSquare[1]) + 1})
@@ -24,12 +33,14 @@ const PieceInfo = ({ selectedPiece, selectedSquare, defaultMessage }) => {
 
 PieceInfo.propTypes = {
   selectedPiece: PropTypes.object,
-  selectedSquare: PropTypes.array
+  selectedSquare: PropTypes.array,
+  currentPlayer: PropTypes.string
 };
 
 const mapStateToProps = state => ({
   selectedPiece: state.boardReducer.selectedPiece,
-  selectedSquare: state.boardReducer.selectedSquare
+  selectedSquare: state.boardReducer.selectedSquare,
+  currentPlayer: state.gameReducer.currentPlayer
 });
 
 export default connect(mapStateToProps, null)(PieceInfo);

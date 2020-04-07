@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import GameTime from './GameTime/GameTime';
+
 const GameInfo = ({ currentPlayer, turnCount }) => {
   return (
-    <div>
-      {`Turn: ${Math.floor(turnCount)}`}
-      <div>
+    <Fragment>
+      <div className="turn-counter game-info-dash">{`Turn: ${Math.floor(
+        turnCount
+      )}`}</div>
+      <div className="player-turn game-info-dash">
         {turnCount > 1
           ? `${currentPlayer}'s Turn`
           : `${currentPlayer} moves first`}
       </div>
-    </div>
+      <div className="game-timer game-info-dash">
+        <GameTime />
+      </div>
+    </Fragment>
   );
 };
 

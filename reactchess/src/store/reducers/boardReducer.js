@@ -5,12 +5,13 @@ import {
   CLEAR_SELECTION,
   HOVERED_PIECE,
   CLEAR_HOVER,
-  UPDATE_SCORE
+  UPDATE_SCORE,
+  CASTLE
 } from '../actions/actionTypes';
-
 import { board } from '../pieces/startingBoard';
 import { squareVisualSelector } from '../../utils/squareVisualSelector';
 import { boardChange } from '../../utils/boardChange';
+import { castle } from '../../utils/castle/castle';
 
 const initialState = {
   selectedSquare: [null, null],
@@ -19,7 +20,8 @@ const initialState = {
   hoveredSquare: [null, null],
   board: board,
   takenWhitePieces: [],
-  takenBlackPieces: []
+  takenBlackPieces: [],
+  log: []
 };
 
 export default (state = initialState, action) => {
@@ -38,9 +40,14 @@ export default (state = initialState, action) => {
     case CLEAR_HOVER:
       return { ...state, hoveredPiece: null, hoveredSquare: [null, null] };
     case SELECT_MOVE:
-      return boardChange(state, payload);
+      return boardChange(state, payload.targetSquare, payload.startTime);
     case TAKE_PIECE:
-      return boardChange(state, payload.targetPiece);
+      return boardChange(state, payload.targetPiece, payload.startTime);
+    case CASTLE:
+      let newState = castle(state, payload);
+      board[state.selectedSquare[0]][state.selectedSquare[1]].hasMoved = true;
+      board[payload.switchTo[0]][payload.switchTo[1]].hasMoved = true;
+      return newState;
     case UPDATE_SCORE:
       return {
         ...state,

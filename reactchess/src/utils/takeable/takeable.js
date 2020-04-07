@@ -22,7 +22,6 @@ export const takeable = (state, payload) => {
           : selectedSquareRow > row;
       if (moveDiagonalSingle && backwards) {
         if (collisionDetector(state, payload)) return false;
-        selectedPiece.hasMoved = true;
         return true;
       }
       return false;

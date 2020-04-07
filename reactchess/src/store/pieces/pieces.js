@@ -62,24 +62,28 @@ const pieces = {
     color: 'white'
   },
   whiteKnight1: {
+    hasMoved: false,
     avatar: 'white-knight',
     alive: true,
     name: 'White Knight',
     color: 'white'
   },
   whiteKnight2: {
+    hasMoved: false,
     avatar: 'white-knight',
     alive: true,
     name: 'White Knight',
     color: 'white'
   },
   whiteBishop1: {
+    hasMoved: false,
     avatar: 'white-bishop',
     alive: true,
     name: 'White Bishop',
     color: 'white'
   },
   whiteBishop2: {
+    hasMoved: false,
     avatar: 'white-bishop',
     alive: true,
     name: 'White Bishop',
@@ -94,6 +98,7 @@ const pieces = {
     color: 'white'
   },
   whiteQueen: {
+    hasMoved: false,
     avatar: 'white-queen',
     alive: true,
     name: 'White Queen',
@@ -163,24 +168,28 @@ const pieces = {
   },
 
   blackKnight1: {
+    hasMoved: false,
     avatar: 'black-knight',
     alive: true,
     name: 'Black Knight',
     color: 'black'
   },
   blackKnight2: {
+    hasMoved: false,
     avatar: 'black-knight',
     alive: true,
     name: 'Black Knight',
     color: 'black'
   },
   blackBishop1: {
+    hasMoved: false,
     avatar: 'black-bishop',
     alive: true,
     name: 'Black Bishop',
     color: 'black'
   },
   blackBishop2: {
+    hasMoved: false,
     avatar: 'black-bishop',
     alive: true,
     name: 'Black Bishop',
@@ -195,6 +204,7 @@ const pieces = {
     color: 'black'
   },
   blackQueen: {
+    hasMoved: false,
     avatar: 'black-queen',
     alive: true,
     name: 'Black Queen',

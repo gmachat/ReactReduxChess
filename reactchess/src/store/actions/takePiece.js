@@ -1,6 +1,8 @@
 import { TAKE_PIECE } from '../actions/actionTypes';
 
-export const takePiece = (targetPiece, attacker) => dispatch => {
+export const takePiece = (targetPiece, attacker, startTime) => dispatch => {
+  console.log('dispatched', startTime);
+
   return dispatch({
     type: TAKE_PIECE,
     payload: {
@@ -8,7 +10,8 @@ export const takePiece = (targetPiece, attacker) => dispatch => {
         row: targetPiece.dataset.row,
         column: targetPiece.dataset.column
       },
-      attacker
+      attacker,
+      startTime
     }
   });
 };

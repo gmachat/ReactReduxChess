@@ -12,11 +12,11 @@ import {
   hoveredPiece,
   clearHover,
   changePlayer,
-  updateScore
+  updateScore,
+  startTime,
+  castle
 } from '../../../store/actions';
 import { conditionals } from './conditionals';
-import { moveable } from '../../../utils/moveable/moveable';
-import { takeable } from '../../../utils/takeable/takeable';
 import { addScore } from '../../../utils/addScore/addScore';
 
 const Square = ({
@@ -39,10 +39,14 @@ const Square = ({
   changePlayer,
   takenWhitePieces,
   takenBlackPieces,
-  updateScore
+  updateScore,
+  turnCount,
+  startTime,
+  startingTime,
+  castle
 }) => {
   const piece = board[row][column] ? board[row][column] : null;
-  const onClick = async event => {
+  const onClick = event => {
     clearAlert();
     const targetSquare =
       board[event.target.dataset.row][event.target.dataset.column];
@@ -51,19 +55,10 @@ const Square = ({
       targetSquare,
       selectedPiece,
       row,
-      column
+      column,
+      board,
+      currentPlayer
     );
-
-    const canBeMoved = moveable(
-      { board, selectedSquare, selectedPiece },
-      { row, column }
-    );
-    let canBeTaken;
-    selectedPiece &&
-      (canBeTaken = takeable(
-        { board, selectedSquare, selectedPiece },
-        { row, column }
-      ));
 
     if (conditional.clickedOnEmptySelf) {
       clearSelection(event.target);
@@ -71,11 +66,25 @@ const Square = ({
     } else if (conditional.squareIsSelected) {
       if (conditional.squareAndTargetEmpty) {
         clearSelection(event.target);
-        selectMove(event.target);
+        selectMove(event.target, startingTime);
         clearHover();
+      } else if (conditional.castling) {
+        castle(
+          [event.target.dataset.row, event.target.dataset.column],
+          startingTime,
+          currentPlayer
+        );
+        clearSelection(event.target);
+        clearHover();
+        gameAlert({
+          message: `${currentPlayer} castles his king!`,
+          color: 'green'
+        });
+        changePlayer(currentPlayer);
       } else if (conditional.targetEmpty) {
-        if (canBeMoved) {
-          selectMove(event.target);
+        if (conditional.canBeMoved) {
+          selectMove(event.target, startingTime);
+          turnCount === 1 && startTime(Date.now());
           changePlayer(currentPlayer);
         } else {
           gameAlert({
@@ -97,7 +106,7 @@ const Square = ({
         clearHover();
       } else if (conditional.clickedOnEnemySquare) {
         const defender = targetSquare;
-        if (canBeTaken) {
+        if (conditional.canBeTaken) {
           updateScore(
             addScore(
               {
@@ -110,7 +119,7 @@ const Square = ({
               { row, column }
             )
           );
-          takePiece(event.target, selectedPiece);
+          takePiece(event.target, selectedPiece, startingTime);
           changePlayer(currentPlayer);
           gameAlert({
             message: `${selectedPiece.name} takes ${defender.name}`,
@@ -176,7 +185,11 @@ Square.propTypes = {
   currentPlayer: PropTypes.string,
   updateScore: PropTypes.func,
   takenWhitePieces: PropTypes.array,
-  takenBlackPieces: PropTypes.array
+  takenBlackPieces: PropTypes.array,
+  turnCount: PropTypes.number,
+  startTime: PropTypes.func,
+  castle: PropTypes.func,
+  startingTime: PropTypes.any
 };
 
 const mapStateToProps = state => {
@@ -186,7 +199,9 @@ const mapStateToProps = state => {
     board: state.boardReducer.board,
     currentPlayer: state.gameReducer.currentPlayer,
     takenWhitePieces: state.boardReducer.takenWhitePieces,
-    takenBlackPieces: state.boardReducer.takenBlackPieces
+    takenBlackPieces: state.boardReducer.takenBlackPieces,
+    turnCount: state.gameReducer.turnCount,
+    startingTime: state.gameReducer.startTime
   };
 };
 export default connect(mapStateToProps, {
@@ -199,5 +214,7 @@ export default connect(mapStateToProps, {
   hoveredPiece,
   clearHover,
   changePlayer,
-  updateScore
+  updateScore,
+  startTime,
+  castle
 })(Square);

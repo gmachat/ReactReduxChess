@@ -7,7 +7,8 @@ import PieceInfo from './PieceInfo/PieceInfo';
 import HoveredPieceInfo from './HoveredPieceInfo/HoveredPieceInfo';
 import GameAction from './GameAction/GameAction';
 import ScoreCard from '../ScoreCard/ScoreCard';
-import GameInfo from '../interface/GameInfo/GameInfo';
+import GameInfo from './GameInfo/GameInfo';
+import GameLog from './GameLog/GameLog';
 
 const Interface = ({ selectedSquare, selectedPiece, hoveredPiece }) => {
   return (
@@ -36,7 +37,9 @@ const Interface = ({ selectedSquare, selectedPiece, hoveredPiece }) => {
       >
         <HoveredPieceInfo />
       </div>
-
+      <div className="game-log-box">
+        <GameLog />
+      </div>
       <div className="game-action-box">
         <GameAction />
       </div>

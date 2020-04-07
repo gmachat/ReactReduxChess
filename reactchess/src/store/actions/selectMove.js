@@ -1,12 +1,14 @@
 import { SELECT_MOVE } from './actionTypes';
 
-export const selectMove = square => dispatch => {
+export const selectMove = (square, startTime) => dispatch => {
   return dispatch({
     type: SELECT_MOVE,
     payload: {
-      row: square.dataset.row,
-      column: square.dataset.column,
-      selected: true
+      targetSquare: {
+        row: square.dataset.row,
+        column: square.dataset.column
+      },
+      startTime
     }
   });
 };
