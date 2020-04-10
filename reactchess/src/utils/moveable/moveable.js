@@ -4,7 +4,7 @@ import { movementChecks } from './movementChecks';
 import { boardCopy } from '../boardCopy';
 
 export const moveable = (state, payload) => {
-  const { board, selectedSquare, selectedPiece } = state;
+  const { board, selectedSquare, selectedPiece, pieces, currentPlayer } = state;
   const { row, column } = payload;
   const newBoard = boardCopy(board);
   const {
@@ -20,6 +20,13 @@ export const moveable = (state, payload) => {
     newBoard[row][column] = selectedPiece;
     newBoard[selectedSquare[0]][selectedSquare[1]] = null;
   };
+
+  // will have to change at somepoint to include possible unchecking
+
+  // if (pieces[currentPlayer === 'White' ? 'blackKing' : 'whiteKing'].inCheck) {
+  //   console.log('youre in check and cant move');
+  //   return false;
+  // }
 
   switch (selectedPiece && selectedPiece.name.split(' ')[1]) {
     case 'Pawn':

@@ -9,12 +9,12 @@ const {
   whitePawn5,
   whitePawn6,
   whitePawn7,
+  whiteRook0,
   whiteRook1,
-  whiteRook2,
+  whiteKnight0,
   whiteKnight1,
-  whiteKnight2,
+  whiteBishop0,
   whiteBishop1,
-  whiteBishop2,
   whiteKing,
   whiteQueen,
   blackPawn0,
@@ -25,26 +25,26 @@ const {
   blackPawn5,
   blackPawn6,
   blackPawn7,
+  blackRook0,
   blackRook1,
-  blackRook2,
+  blackKnight0,
   blackKnight1,
-  blackKnight2,
+  blackBishop0,
   blackBishop1,
-  blackBishop2,
   blackKing,
   blackQueen
 } = pieces;
 
 export const board = [
   [
-    whiteRook1,
-    whiteKnight1,
-    whiteBishop1,
+    whiteRook0,
+    whiteKnight0,
+    whiteBishop0,
     whiteKing,
     whiteQueen,
-    whiteBishop2,
-    whiteKnight2,
-    whiteRook2
+    whiteBishop1,
+    whiteKnight1,
+    whiteRook1
   ],
   [
     whitePawn0,
@@ -71,13 +71,13 @@ export const board = [
     blackPawn7
   ],
   [
-    blackRook2,
-    blackKnight2,
-    blackBishop2,
+    blackRook1,
+    blackKnight1,
+    blackBishop1,
     blackQueen,
     blackKing,
-    blackBishop1,
-    blackKnight1,
-    blackRook1
+    blackBishop0,
+    blackKnight0,
+    blackRook0
   ]
 ];

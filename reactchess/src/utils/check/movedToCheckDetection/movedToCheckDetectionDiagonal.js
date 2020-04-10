@@ -1,4 +1,4 @@
-export const collisionDetectionDiagonal = (
+export const movedToCheckDetectionDiagonal = (
   state,
   payload,
   selectedSquareRow,
@@ -15,12 +15,14 @@ export const collisionDetectionDiagonal = (
       parseInt(row) - selectedSquareRow > 0
         ? selectedSquareRow + i
         : selectedSquareRow - i;
-
     if (
       board[eachRow][eachColumn] !== null &&
       board[eachRow][eachColumn] !== selectedPiece
     ) {
-      return true;
+      return {
+        byPiece: board[eachRow][eachColumn],
+        checkPiece: true
+      };
     }
 
     console.log('nothing here');

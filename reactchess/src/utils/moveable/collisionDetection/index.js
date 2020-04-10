@@ -7,20 +7,24 @@ const collisionDetection = (state, payload) => {
 
   switch (state.selectedPiece.name.split(' ')[1]) {
     case 'Queen':
-      return (
-        collisionDetectionDiagonal(
+      if (
+        parseInt(payload.row) !== selectedSquareRow &&
+        parseInt(payload.column) !== selectedSquareColumn
+      ) {
+        return collisionDetectionDiagonal(
           state,
           payload,
           selectedSquareRow,
           selectedSquareColumn
-        ) ||
-        collisionDetectionNSEW(
+        );
+      } else {
+        return collisionDetectionNSEW(
           state,
           payload,
           selectedSquareRow,
           selectedSquareColumn
-        )
-      );
+        );
+      }
     case 'Rook':
       return collisionDetectionNSEW(
         state,

@@ -11,3 +11,4 @@ export { changePlayer } from './changePlayer';
 export { updateScore } from './updateScore';
 export { castle } from './castle';
 export { startTime } from './startTime';
+export { checkCheck } from './checkCheck';

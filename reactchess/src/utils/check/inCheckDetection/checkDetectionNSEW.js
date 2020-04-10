@@ -24,7 +24,11 @@ export const checkDetectionNSEW = (
             : selectedSquareColumn - i
         ] !== selectedPiece
       ) {
-        return true;
+        return board[selectedSquareRow][
+          parseInt(column) - selectedSquareColumn > 0
+            ? selectedSquareColumn + i
+            : selectedSquareColumn - i
+        ];
       }
     }
   } else if (parseInt(column) === selectedSquareColumn) {
@@ -41,7 +45,15 @@ export const checkDetectionNSEW = (
             : selectedSquareRow - i
         ][selectedSquareColumn] !== selectedPiece
       ) {
-        return true;
+        return {
+          check: true,
+          byPiece:
+            board[
+              parseInt(row) - selectedSquareRow > 0
+                ? selectedSquareRow + i
+                : selectedSquareRow - i
+            ][selectedSquareColumn]
+        };
       }
     }
   }

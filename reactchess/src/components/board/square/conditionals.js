@@ -8,13 +8,16 @@ export const conditionals = (
   row,
   column,
   board,
-  currentPlayer
+  currentPlayer,
+  pieces
 ) => {
   let canBeTaken;
   const correctPlayer = selectedPiece
     ? selectedPiece.color === currentPlayer.toLowerCase()
     : null;
-
+  const kingInCheck =
+    pieces[currentPlayer === 'White' ? 'blackKing' : 'whiteKing'].inCheck;
+  console.log('is king in check ', kingInCheck);
   return {
     //if the new square is empty, move the piece there
     clickedOnEmptySelf:
@@ -41,13 +44,13 @@ export const conditionals = (
     selectFirstSquare:
       `${selectedSquare[0]}${selectedSquare[1]}` !== `${row}${column}`,
     canBeMoved: moveable(
-      { board, selectedSquare, selectedPiece },
+      { board, selectedSquare, selectedPiece, pieces, currentPlayer },
       { row, column }
     ),
     canBeTaken:
       selectedPiece &&
       (canBeTaken = takeable(
-        { board, selectedSquare, selectedPiece },
+        { board, selectedSquare, selectedPiece, pieces, currentPlayer },
         { row, column }
       )),
     castling:

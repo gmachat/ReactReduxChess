@@ -14,10 +14,12 @@ import {
   changePlayer,
   updateScore,
   startTime,
-  castle
+  castle,
+  checkCheck
 } from '../../../store/actions';
 import { conditionals } from './conditionals';
 import { addScore } from '../../../utils/addScore/addScore';
+import movedToCheckDetection from '../../../utils/check/movedToCheckDetection';
 
 const Square = ({
   initialColor,
@@ -43,7 +45,9 @@ const Square = ({
   turnCount,
   startTime,
   startingTime,
-  castle
+  castle,
+  pieces,
+  checkCheck
 }) => {
   const piece = board[row][column] ? board[row][column] : null;
   const onClick = event => {
@@ -57,7 +61,8 @@ const Square = ({
       row,
       column,
       board,
-      currentPlayer
+      currentPlayer,
+      pieces
     );
 
     if (conditional.clickedOnEmptySelf) {
@@ -66,7 +71,7 @@ const Square = ({
     } else if (conditional.squareIsSelected) {
       if (conditional.squareAndTargetEmpty) {
         clearSelection(event.target);
-        selectMove(event.target, startingTime);
+        selectMove(event.target, startingTime, currentPlayer);
         clearHover();
       } else if (conditional.castling) {
         castle(
@@ -76,15 +81,12 @@ const Square = ({
         );
         clearSelection(event.target);
         clearHover();
-        gameAlert({
-          message: `${currentPlayer} castles his king!`,
-          color: 'green'
-        });
         changePlayer(currentPlayer);
       } else if (conditional.targetEmpty) {
         if (conditional.canBeMoved) {
-          selectMove(event.target, startingTime);
+          selectMove(event.target, startingTime, currentPlayer);
           turnCount === 1 && startTime(Date.now());
+
           changePlayer(currentPlayer);
         } else {
           gameAlert({
@@ -119,7 +121,7 @@ const Square = ({
               { row, column }
             )
           );
-          takePiece(event.target, selectedPiece, startingTime);
+          takePiece(event.target, selectedPiece, startingTime, currentPlayer);
           changePlayer(currentPlayer);
           gameAlert({
             message: `${selectedPiece.name} takes ${defender.name}`,
@@ -140,6 +142,15 @@ const Square = ({
       selectPiece(event.target);
       clearHover();
     }
+
+    checkCheck(
+      {
+        row: event.target.dataset.row,
+        column: event.target.dataset.column
+      },
+      currentPlayer
+    );
+    console.log('checking check');
   };
 
   const onMouseOver = event => {
@@ -189,7 +200,9 @@ Square.propTypes = {
   turnCount: PropTypes.number,
   startTime: PropTypes.func,
   castle: PropTypes.func,
-  startingTime: PropTypes.any
+  startingTime: PropTypes.any,
+  pieces: PropTypes.object,
+  checkCheck: PropTypes.func
 };
 
 const mapStateToProps = state => {
@@ -201,7 +214,8 @@ const mapStateToProps = state => {
     takenWhitePieces: state.boardReducer.takenWhitePieces,
     takenBlackPieces: state.boardReducer.takenBlackPieces,
     turnCount: state.gameReducer.turnCount,
-    startingTime: state.gameReducer.startTime
+    startingTime: state.gameReducer.startTime,
+    pieces: state.boardReducer.pieces
   };
 };
 export default connect(mapStateToProps, {
@@ -216,5 +230,6 @@ export default connect(mapStateToProps, {
   changePlayer,
   updateScore,
   startTime,
-  castle
+  castle,
+  checkCheck
 })(Square);

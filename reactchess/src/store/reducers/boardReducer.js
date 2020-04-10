@@ -6,12 +6,15 @@ import {
   HOVERED_PIECE,
   CLEAR_HOVER,
   UPDATE_SCORE,
-  CASTLE
+  CASTLE,
+  CHECK_CHECK
 } from '../actions/actionTypes';
 import { board } from '../pieces/startingBoard';
 import { squareVisualSelector } from '../../utils/squareVisualSelector';
 import { boardChange } from '../../utils/boardChange';
 import { castle } from '../../utils/castle/castle';
+import pieces from '../pieces/pieces';
+import checkDetection from '../../utils/check/inCheckDetection';
 
 const initialState = {
   selectedSquare: [null, null],
@@ -21,7 +24,8 @@ const initialState = {
   board: board,
   takenWhitePieces: [],
   takenBlackPieces: [],
-  log: []
+  log: [],
+  pieces: pieces
 };
 
 export default (state = initialState, action) => {
@@ -34,20 +38,27 @@ export default (state = initialState, action) => {
     case HOVERED_PIECE:
       return {
         ...state,
-        hoveredPiece: board[payload.row][payload.column],
+        hoveredPiece: state.board[payload.row][payload.column],
         hoveredSquare: [payload.row, payload.column]
       };
     case CLEAR_HOVER:
       return { ...state, hoveredPiece: null, hoveredSquare: [null, null] };
     case SELECT_MOVE:
-      return boardChange(state, payload.targetSquare, payload.startTime);
+      return boardChange(
+        state,
+        payload.targetSquare,
+        payload.startTime,
+        payload.currentPlayer
+      );
     case TAKE_PIECE:
-      return boardChange(state, payload.targetPiece, payload.startTime);
+      return boardChange(
+        state,
+        payload.targetPiece,
+        payload.startTime,
+        payload.currentPlayer
+      );
     case CASTLE:
-      let newState = castle(state, payload);
-      board[state.selectedSquare[0]][state.selectedSquare[1]].hasMoved = true;
-      board[payload.switchTo[0]][payload.switchTo[1]].hasMoved = true;
-      return newState;
+      return castle(state, payload);
     case UPDATE_SCORE:
       return {
         ...state,
@@ -55,6 +66,8 @@ export default (state = initialState, action) => {
         takenWhitePieces: payload.takenWhitePieces,
         takenBlackPieces: payload.takenBlackPieces
       };
+    case CHECK_CHECK:
+      return checkDetection(state, payload.checkPiece, payload.currentPlayer);
     default:
       return state;
   }
