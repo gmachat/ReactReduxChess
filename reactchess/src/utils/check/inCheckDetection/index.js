@@ -5,8 +5,9 @@ const checkDetection = (state, { row, column }, currentPlayer) => {
   const selectedSquareRow = parseInt(state.selectedSquare[0]);
   const selectedSquareColumn = parseInt(state.selectedSquare[1]);
   const updatedPiece = {
-    ...state.pieces[currentPlayer === 'White' ? 'blackKing' : 'whiteKing']
+    ...state.pieces[currentPlayer === 'White' ? 'blackKing' : 'whiteKing'],
   };
+  console.log('check detection function');
   console.log(updatedPiece);
   const pieceName = updatedPiece.id;
 

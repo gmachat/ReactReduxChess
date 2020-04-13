@@ -11,7 +11,12 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
 
   let updatedPieces = { ...state.pieces };
   let updatedPiece = updatedPieces[state.selectedPiece.id];
-  const movedToCheck = movedToCheckDetection(state, payload, currentPlayer);
+  console.log('boardchange payload', payload);
+  const movedToCheck = movedToCheckDetection(
+    state,
+    { row, column, letters },
+    currentPlayer
+  );
   const newBoard = boardCopy(state.board);
 
   console.log('movedtocheck check');
@@ -38,10 +43,13 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
         state.board[row][column]
           ? `${state.board[row][column].name} at Square-${letters[row]}${column} `
           : `Square-${letters[row]}${column} `
-      }(${getTimeStamp(startTime)})`
+      }(${getTimeStamp(startTime)})`,
     ];
     updatedPieces[state.selectedPiece.id] = updatedPiece;
-
+    //updates the kings location in the state
+    if (updatedPiece.name.split(' ')[1] === 'King') {
+      updatedPiece.location = [row, column];
+    }
     return { ...state, board: newBoard, log: logEntry, pieces: updatedPieces };
   } else {
     console.log('herreeeees the problmen');
