@@ -1,5 +1,6 @@
 import { moveable } from '../../../utils/moveable/moveable';
 import { takeable } from '../../../utils/takeable/takeable';
+import movedToCheckDetection from '../../../utils/check/movedToCheckDetection';
 
 export const conditionals = (
   selectedSquare,
@@ -53,6 +54,14 @@ export const conditionals = (
         { board, selectedSquare, selectedPiece, pieces, currentPlayer },
         { row, column }
       )),
+    movedToCheck: movedToCheckDetection(
+      { board, pieces, selectedSquare, selectedPiece },
+      currentPlayer,
+      {
+        row,
+        column,
+      }
+    ),
     castling:
       selectedPiece &&
       targetSquare &&
@@ -63,6 +72,6 @@ export const conditionals = (
         targetSquare.name.split(' ')[1] === 'King') ||
         (selectedPiece.color === targetSquare.color &&
           selectedPiece.name.split(' ')[1] === 'King' &&
-          targetSquare.name.split(' ')[1] === 'Rook'))
+          targetSquare.name.split(' ')[1] === 'Rook')),
   };
 };

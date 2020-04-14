@@ -15,11 +15,10 @@ import {
   updateScore,
   startTime,
   castle,
-  checkCheck
+  checkCheck,
 } from '../../../store/actions';
 import { conditionals } from './conditionals';
 import { addScore } from '../../../utils/addScore/addScore';
-import movedToCheckDetection from '../../../utils/check/movedToCheckDetection';
 
 const Square = ({
   initialColor,
@@ -47,10 +46,10 @@ const Square = ({
   startingTime,
   castle,
   pieces,
-  checkCheck
+  checkCheck,
 }) => {
   const piece = board[row][column] ? board[row][column] : null;
-  const onClick = event => {
+  const onClick = (event) => {
     clearAlert();
     const targetSquare =
       board[event.target.dataset.row][event.target.dataset.column];
@@ -64,15 +63,27 @@ const Square = ({
       currentPlayer,
       pieces
     );
-
+    let movedToCheck;
+    if (conditional.movedToCheck && conditional.movedToCheck.length > 0) {
+      movedToCheck = conditional.movedToCheck;
+    }
+    console.log(conditional.movedToCheck);
+    console.log('movedtocheck', movedToCheck);
     if (conditional.clickedOnEmptySelf) {
       clearSelection(event.target);
       clearHover();
     } else if (conditional.squareIsSelected) {
       if (conditional.squareAndTargetEmpty) {
         clearSelection(event.target);
-        selectMove(event.target, startingTime, currentPlayer);
-        clearHover();
+        if (movedToCheck) {
+          gameAlert({
+            message: 'You can not move into check, or remain in check',
+            color: 'red',
+          });
+        } else {
+          selectMove(event.target, startingTime, currentPlayer);
+          clearHover();
+        }
       } else if (conditional.castling) {
         castle(
           [event.target.dataset.row, event.target.dataset.column],
@@ -84,14 +95,21 @@ const Square = ({
         changePlayer(currentPlayer);
       } else if (conditional.targetEmpty) {
         if (conditional.canBeMoved) {
-          selectMove(event.target, startingTime, currentPlayer);
-          turnCount === 1 && startTime(Date.now());
+          if (movedToCheck) {
+            gameAlert({
+              message: 'You can not move into check, or remain in check',
+              color: 'red',
+            });
+          } else {
+            selectMove(event.target, startingTime, currentPlayer);
+            turnCount === 1 && startTime(Date.now());
 
-          changePlayer(currentPlayer);
+            changePlayer(currentPlayer);
+          }
         } else {
           gameAlert({
             message: 'You can not place your piece here!',
-            color: 'red'
+            color: 'red',
           });
         }
         clearSelection(event.target);
@@ -101,7 +119,7 @@ const Square = ({
       } else if (conditional.sameSquareAsAlly) {
         gameAlert({
           message: `You can not place your piece here! The ${targetSquare.name} is an ally!`,
-          color: 'red'
+          color: 'red',
         });
         setTimeout(clearAlert, 4000);
         clearSelection(event.target);
@@ -109,29 +127,36 @@ const Square = ({
       } else if (conditional.clickedOnEnemySquare) {
         const defender = targetSquare;
         if (conditional.canBeTaken) {
-          updateScore(
-            addScore(
-              {
-                selectedSquare,
-                selectedPiece,
-                board,
-                takenWhitePieces,
-                takenBlackPieces
-              },
-              { row, column }
-            )
-          );
-          takePiece(event.target, selectedPiece, startingTime, currentPlayer);
-          changePlayer(currentPlayer);
-          gameAlert({
-            message: `${selectedPiece.name} takes ${defender.name}`,
-            color: 'green'
-          });
-          setTimeout(clearAlert, 4000);
+          if (movedToCheck) {
+            gameAlert({
+              message: 'You can not move into check, or remain in check',
+              color: 'red',
+            });
+          } else {
+            updateScore(
+              addScore(
+                {
+                  selectedSquare,
+                  selectedPiece,
+                  board,
+                  takenWhitePieces,
+                  takenBlackPieces,
+                },
+                { row, column }
+              )
+            );
+            takePiece(event.target, selectedPiece, startingTime, currentPlayer);
+            changePlayer(currentPlayer);
+            gameAlert({
+              message: `${selectedPiece.name} takes ${defender.name}`,
+              color: 'green',
+            });
+            setTimeout(clearAlert, 4000);
+          }
         } else {
           gameAlert({
             message: `You cannot attack the ${defender.name} from here!`,
-            color: 'red'
+            color: 'red',
           });
         }
         setTimeout(clearAlert, 4000);
@@ -146,18 +171,18 @@ const Square = ({
     checkCheck(
       {
         row: event.target.dataset.row,
-        column: event.target.dataset.column
+        column: event.target.dataset.column,
       },
       currentPlayer
     );
     console.log('checking check');
   };
 
-  const onMouseOver = event => {
+  const onMouseOver = (event) => {
     hoveredPiece(event.target);
   };
 
-  const onMouseOut = event => {
+  const onMouseOut = (event) => {
     clearHover();
   };
 
@@ -170,9 +195,9 @@ const Square = ({
   return (
     <td
       className={`${squareClass} ${piece && piece.avatar}`}
-      onClick={e => onClick(e)}
-      onMouseOver={e => onMouseOver(e)}
-      onMouseOut={e => onMouseOut(e)}
+      onClick={(e) => onClick(e)}
+      onMouseOver={(e) => onMouseOver(e)}
+      onMouseOut={(e) => onMouseOut(e)}
       data-row={row}
       data-column={column}
       id={`sq-${row}${column}`}
@@ -202,10 +227,10 @@ Square.propTypes = {
   castle: PropTypes.func,
   startingTime: PropTypes.any,
   pieces: PropTypes.object,
-  checkCheck: PropTypes.func
+  checkCheck: PropTypes.func,
 };
 
-const mapStateToProps = state => {
+const mapStateToProps = (state) => {
   return {
     selectedSquare: state.boardReducer.selectedSquare,
     selectedPiece: state.boardReducer.selectedPiece,
@@ -215,7 +240,7 @@ const mapStateToProps = state => {
     takenBlackPieces: state.boardReducer.takenBlackPieces,
     turnCount: state.gameReducer.turnCount,
     startingTime: state.gameReducer.startTime,
-    pieces: state.boardReducer.pieces
+    pieces: state.boardReducer.pieces,
   };
 };
 export default connect(mapStateToProps, {
@@ -231,5 +256,5 @@ export default connect(mapStateToProps, {
   updateScore,
   startTime,
   castle,
-  checkCheck
+  checkCheck,
 })(Square);

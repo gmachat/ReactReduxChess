@@ -11,11 +11,11 @@ export const takeable = (state, payload) => {
     moveNSEW,
     moveDiagonalSingle,
     selectedSquareRow,
-    selectedSquareColumn
+    selectedSquareColumn,
   } = movementChecks(state, payload);
 
-  switch (selectedPiece.name.split(' ')[1]) {
-    case 'Pawn':
+  switch (selectedPiece.type) {
+    case 'pawn':
       let backwards =
         selectedPiece.color === 'white'
           ? selectedSquareRow < row
@@ -26,13 +26,13 @@ export const takeable = (state, payload) => {
       }
       return false;
 
-    case 'Rook':
+    case 'rook':
       if (moveNSEW) {
         if (collisionDetector(state, payload)) return false;
         return true;
       }
       return false;
-    case 'Knight':
+    case 'knight':
       if (
         (Math.abs(row - selectedSquareRow) === 2 &&
           Math.abs(column - selectedSquareColumn) === 1) ||
@@ -42,18 +42,18 @@ export const takeable = (state, payload) => {
         return true;
       }
       return false;
-    case 'Bishop':
+    case 'bishop':
       if (moveDiagonal) {
         if (collisionDetector(state, payload)) return false;
         return true;
       }
       return false;
-    case 'King':
+    case 'king':
       if (moveDiagonalSingle || moveOneVertical || moveOneHorizontal) {
         return true;
       }
       return false;
-    case 'Queen':
+    case 'queen':
       if (moveNSEW || moveDiagonal) {
         if (collisionDetector(state, payload)) return false;
         return true;

@@ -5,6 +5,7 @@ const pieces = {
     id: 'whitePawn0',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn1: {
     hasMoved: false,
@@ -12,6 +13,7 @@ const pieces = {
     id: 'whitePawn1',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn2: {
     hasMoved: false,
@@ -19,6 +21,7 @@ const pieces = {
     id: 'whitePawn2',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn3: {
     hasMoved: false,
@@ -26,6 +29,7 @@ const pieces = {
     id: 'whitePawn3',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn4: {
     hasMoved: false,
@@ -33,6 +37,7 @@ const pieces = {
     id: 'whitePawn4',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn5: {
     hasMoved: false,
@@ -40,6 +45,7 @@ const pieces = {
     id: 'whitePawn5',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn6: {
     hasMoved: false,
@@ -47,6 +53,7 @@ const pieces = {
     id: 'whitePawn6',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whitePawn7: {
     hasMoved: false,
@@ -54,6 +61,7 @@ const pieces = {
     id: 'whitePawn7',
     name: 'White Pawn',
     color: 'white',
+    type: 'pawn',
   },
   whiteRook0: {
     hasMoved: false,
@@ -62,6 +70,7 @@ const pieces = {
     id: 'whiteRook0',
     name: 'White Rook',
     color: 'white',
+    type: 'rook',
   },
   whiteRook1: {
     hasMoved: false,
@@ -70,6 +79,7 @@ const pieces = {
     id: 'whiteRook1',
     name: 'White Rook',
     color: 'white',
+    type: 'rook',
   },
   whiteKnight0: {
     hasMoved: false,
@@ -78,6 +88,7 @@ const pieces = {
     alive: true,
     name: 'White Knight',
     color: 'white',
+    type: 'knight',
   },
   whiteKnight1: {
     hasMoved: false,
@@ -86,6 +97,7 @@ const pieces = {
     alive: true,
     name: 'White Knight',
     color: 'white',
+    type: 'knight',
   },
   whiteBishop0: {
     hasMoved: false,
@@ -94,6 +106,7 @@ const pieces = {
     alive: true,
     name: 'White Bishop',
     color: 'white',
+    type: 'bishop',
   },
   whiteBishop1: {
     hasMoved: false,
@@ -102,6 +115,7 @@ const pieces = {
     alive: true,
     name: 'White Bishop',
     color: 'white',
+    type: 'bishop',
   },
   whiteKing: {
     hasMoved: false,
@@ -112,6 +126,7 @@ const pieces = {
     alive: true,
     name: 'White King',
     color: 'white',
+    type: 'king',
   },
   whiteQueen: {
     hasMoved: false,
@@ -120,6 +135,7 @@ const pieces = {
     alive: true,
     name: 'White Queen',
     color: 'white',
+    type: 'queen',
   },
   blackPawn0: {
     hasMoved: false,
@@ -127,6 +143,7 @@ const pieces = {
     id: 'blackPawn0',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn1: {
     hasMoved: false,
@@ -134,6 +151,7 @@ const pieces = {
     id: 'blackPawn1',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn2: {
     hasMoved: false,
@@ -141,6 +159,7 @@ const pieces = {
     id: 'blackPawn2',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn3: {
     hasMoved: false,
@@ -148,6 +167,7 @@ const pieces = {
     id: 'blackPawn3',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn4: {
     hasMoved: false,
@@ -155,6 +175,7 @@ const pieces = {
     id: 'blackPawn4',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn5: {
     hasMoved: false,
@@ -162,6 +183,7 @@ const pieces = {
     id: 'blackPawn5',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn6: {
     hasMoved: false,
@@ -169,6 +191,7 @@ const pieces = {
     id: 'blackPawn6',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackPawn7: {
     hasMoved: false,
@@ -176,6 +199,7 @@ const pieces = {
     id: 'blackPawn7',
     name: 'Black Pawn',
     color: 'black',
+    type: 'pawn',
   },
   blackRook0: {
     hasMoved: false,
@@ -184,6 +208,7 @@ const pieces = {
     alive: true,
     name: 'Black Rook',
     color: 'black',
+    type: 'rook',
   },
   blackRook1: {
     hasMoved: false,
@@ -192,6 +217,7 @@ const pieces = {
     alive: true,
     name: 'Black Rook',
     color: 'black',
+    type: 'rook',
   },
 
   blackKnight0: {
@@ -201,6 +227,7 @@ const pieces = {
     alive: true,
     name: 'Black Knight',
     color: 'black',
+    type: 'knight',
   },
   blackKnight1: {
     hasMoved: false,
@@ -209,6 +236,7 @@ const pieces = {
     alive: true,
     name: 'Black Knight',
     color: 'black',
+    type: 'knight',
   },
   blackBishop0: {
     hasMoved: false,
@@ -217,6 +245,7 @@ const pieces = {
     alive: true,
     name: 'Black Bishop',
     color: 'black',
+    type: 'bishop',
   },
   blackBishop1: {
     hasMoved: false,
@@ -225,6 +254,7 @@ const pieces = {
     alive: true,
     name: 'Black Bishop',
     color: 'black',
+    type: 'bishop',
   },
   blackKing: {
     hasMoved: false,
@@ -235,6 +265,7 @@ const pieces = {
     alive: true,
     name: 'Black King',
     color: 'black',
+    type: 'king',
   },
   blackQueen: {
     hasMoved: false,
@@ -243,6 +274,7 @@ const pieces = {
     alive: true,
     name: 'Black Queen',
     color: 'black',
+    type: 'queen',
   },
 };
 

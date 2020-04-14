@@ -8,9 +8,8 @@ const PieceInfo = ({
   selectedPiece,
   selectedSquare,
   defaultMessage,
-  currentPlayer
+  currentPlayer,
 }) => {
-  console.log(currentPlayer);
   if (selectedPiece) {
     return (
       <div className={`piece-location`}>
@@ -34,13 +33,13 @@ const PieceInfo = ({
 PieceInfo.propTypes = {
   selectedPiece: PropTypes.object,
   selectedSquare: PropTypes.array,
-  currentPlayer: PropTypes.string
+  currentPlayer: PropTypes.string,
 };
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   selectedPiece: state.boardReducer.selectedPiece,
   selectedSquare: state.boardReducer.selectedSquare,
-  currentPlayer: state.gameReducer.currentPlayer
+  currentPlayer: state.gameReducer.currentPlayer,
 });
 
 export default connect(mapStateToProps, null)(PieceInfo);

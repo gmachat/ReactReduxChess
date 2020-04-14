@@ -1,40 +1,46 @@
 import { movedToCheckDetectionNSEW } from './movedTocheckDetectionNSEW';
 import { movedToCheckDetectionDiagonal } from './movedToCheckDetectionDiagonal';
+import { movedToCheckDetectionKnights } from './movedToCheckDetectionKnights';
+import { boardCopy } from '../../../utils/boardCopy';
 
-const movedToCheckDetection = (
-  state,
-  { row, column, letters },
-  currentPlayer
-) => {
-  console.log(row, column, letters);
-  const selectedSquareRow = parseInt(state.selectedSquare[0]);
-  const selectedSquareColumn = parseInt(state.selectedSquare[1]);
-  const king = {
-    ...state.pieces[currentPlayer === 'White' ? 'whiteKing' : 'blackKing'],
-  };
-  const pieceName = king.id;
-  console.log('piecename un index', pieceName);
+const movedToCheckDetection = (state, currentPlayer, newMove) => {
+  let king;
+  const newBoard = boardCopy(state.board);
+  if (state.selectedSquare[0] !== null) {
+    newBoard[newMove.row][newMove.column] = state.selectedPiece;
+    newBoard[state.selectedSquare[0]][state.selectedSquare[1]] = null;
+  }
 
-  const NSEWresult = movedToCheckDetectionNSEW(state, king);
+  if (state.selectedPiece && state.selectedPiece.type === 'king') {
+    king = { ...state.selectedPiece, location: [newMove.row, newMove.column] };
+    console.log(king);
+  } else {
+    king = {
+      ...state.pieces[currentPlayer === 'White' ? 'whiteKing' : 'blackKing'],
+    };
+  }
 
-  const diagonalResult = movedToCheckDetectionDiagonal(
-    state,
-    { row, column },
-    selectedSquareRow,
-    selectedSquareColumn
-  );
+  let checkResults = [];
+
+  const NSEWresult = movedToCheckDetectionNSEW(king, newBoard);
+  const diagonalResult = movedToCheckDetectionDiagonal(king, newBoard);
+  const knightsResult = movedToCheckDetectionKnights(king, newBoard);
 
   console.log('diagonal result', diagonalResult);
   console.log('NSEW result', NSEWresult);
 
-  if (NSEWresult && NSEWresult.checkPiece) {
-    console.log('NSEW CHECK when hit', NSEWresult);
-    return NSEWresult;
-  } else if (diagonalResult && diagonalResult.checkPiece) {
-    console.log('diagonalresult', diagonalResult);
-    return diagonalResult;
+  checkResults = checkResults.concat(
+    NSEWresult && NSEWresult,
+    diagonalResult && diagonalResult,
+    knightsResult && knightsResult
+  );
+  console.log('checkResults', checkResults);
+
+  if (checkResults.length > 0) {
+    console.log('CHECK RESULTSwhen hit', checkResults);
+    return checkResults;
   } else {
-    return 'not in check';
+    return null;
   }
 };
 

@@ -6,7 +6,7 @@ const GameLog = ({ log }) => {
   const reversed = [...log].reverse();
   let renderedLog =
     reversed &&
-    reversed.map(el => {
+    reversed.map((el) => {
       return (
         <li
           className={`${el.split(' ')[0].toLowerCase()}-li log-li`}
@@ -17,7 +17,6 @@ const GameLog = ({ log }) => {
       );
     });
 
-  console.log(log);
   return (
     <Fragment>
       <h2 className="secondary-title">Game Log</h2>
@@ -27,11 +26,11 @@ const GameLog = ({ log }) => {
 };
 
 GameLog.propTypes = {
-  log: PropTypes.array
+  log: PropTypes.array,
 };
 
-const mapStateToProps = state => ({
-  log: state.boardReducer.log
+const mapStateToProps = (state) => ({
+  log: state.boardReducer.log,
 });
 
 export default connect(mapStateToProps, null)(GameLog);

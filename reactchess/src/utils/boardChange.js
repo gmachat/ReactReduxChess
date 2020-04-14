@@ -11,22 +11,8 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
 
   let updatedPieces = { ...state.pieces };
   let updatedPiece = updatedPieces[state.selectedPiece.id];
-  console.log('boardchange payload', payload);
-  const movedToCheck = movedToCheckDetection(
-    state,
-    { row, column, letters },
-    currentPlayer
-  );
-  const newBoard = boardCopy(state.board);
 
-  console.log('movedtocheck check');
-  console.log(
-    'running check func',
-    movedToCheckDetection(state, payload, currentPlayer)
-  );
-  if (movedToCheck && movedToCheck.true) {
-    console.log('in check cant proceeed');
-  }
+  const newBoard = boardCopy(state.board);
 
   if (state.selectedPiece && state.selectedSquare[0]) {
     newBoard[row][column] = state.selectedPiece;
@@ -46,10 +32,18 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
       }(${getTimeStamp(startTime)})`,
     ];
     updatedPieces[state.selectedPiece.id] = updatedPiece;
+
     //updates the kings location in the state
-    if (updatedPiece.name.split(' ')[1] === 'King') {
+    if (updatedPiece.type === 'king') {
       updatedPiece.location = [row, column];
     }
+    // const movedToCheck = movedToCheckDetection(state, currentPlayer);
+
+    // if (movedToCheck) {
+    //   console.log('in check cant proceeed');
+    //   return { ...state };
+    // }
+
     return { ...state, board: newBoard, log: logEntry, pieces: updatedPieces };
   } else {
     console.log('herreeeees the problmen');
