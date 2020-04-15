@@ -1,8 +1,8 @@
 import { CHECK_CHECK } from './actionTypes';
 
-export const checkCheck = (checkPiece, currentPlayer) => dispatch => {
+export const checkCheck = (currentPlayer, inCheck, startTime) => (dispatch) => {
   return dispatch({
     type: CHECK_CHECK,
-    payload: { checkPiece, currentPlayer }
+    payload: { currentPlayer, inCheck, startTime },
   });
 };

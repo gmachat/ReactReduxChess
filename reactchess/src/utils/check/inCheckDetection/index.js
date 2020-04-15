@@ -1,38 +1,49 @@
 import { checkDetectionNSEW } from './checkDetectionNSEW';
 import { checkDetectionDiagonal } from './checkDetectionDiagonal';
+import { checkDetectionKnights } from './inCheckDetectionKnights';
+import { boardCopy } from '../../../utils/boardCopy';
 
-const checkDetection = (state, { row, column }, currentPlayer) => {
-  const selectedSquareRow = parseInt(state.selectedSquare[0]);
-  const selectedSquareColumn = parseInt(state.selectedSquare[1]);
-  const updatedPiece = {
-    ...state.pieces[currentPlayer === 'White' ? 'blackKing' : 'whiteKing'],
-  };
-  console.log('check detection function');
-  console.log(updatedPiece);
-  const pieceName = updatedPiece.id;
+const checkDetection = (state, currentPlayer, newMove) => {
+  let king;
+  const newBoard = boardCopy(state.board);
+  if (state.selectedSquare[0] !== null) {
+    newBoard[newMove.row][newMove.column] = state.selectedPiece;
+    newBoard[state.selectedSquare[0]][state.selectedSquare[1]] = null;
+  }
 
-  if (
-    checkDetectionNSEW(
-      state,
-      { row, column },
-      selectedSquareRow,
-      selectedSquareColumn
-    ) ||
-    checkDetectionDiagonal(
-      state,
-      { row, column },
-      selectedSquareRow,
-      selectedSquareColumn
-    )
-  ) {
-    console.log('found something');
-    updatedPiece.inCheck = true;
-    const updatedPieces = { ...state.pieces };
-    updatedPieces[pieceName] = updatedPiece;
-
-    return { ...state, pieces: updatedPieces };
+  if (state.selectedPiece && state.selectedPiece.type === 'king') {
+    king = {
+      ...state.selectedPiece,
+      location: [newMove.row, newMove.column],
+    };
+    console.log(king);
   } else {
-    return { ...state };
+    king = {
+      ...state.pieces[currentPlayer === 'Black' ? 'whiteKing' : 'blackKing'],
+    };
+  }
+
+  let checkResults = [];
+
+  const NSEWresult = checkDetectionNSEW(king, newBoard);
+  const diagonalResult = checkDetectionDiagonal(king, newBoard);
+  const knightsResult = checkDetectionKnights(king, newBoard);
+
+  console.log('diagonal result for incheck detect', diagonalResult);
+  console.log('NSEW result for in check detect', NSEWresult);
+
+  checkResults = checkResults.concat(
+    NSEWresult && NSEWresult,
+    diagonalResult && diagonalResult,
+    knightsResult && knightsResult
+  );
+  console.log('InCheckKing checkResults', checkResults);
+
+  if (checkResults.length > 0) {
+    console.log('CHECK RESULTSwhen hit for in check detect', checkResults);
+    return checkResults;
+  } else {
+    return null;
   }
 };
 

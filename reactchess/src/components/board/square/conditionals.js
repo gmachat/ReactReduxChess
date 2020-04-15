@@ -1,6 +1,7 @@
 import { moveable } from '../../../utils/moveable/moveable';
 import { takeable } from '../../../utils/takeable/takeable';
 import movedToCheckDetection from '../../../utils/check/movedToCheckDetection';
+import inCheckDetection from '../../../utils/check/inCheckDetection';
 
 export const conditionals = (
   selectedSquare,
@@ -55,6 +56,14 @@ export const conditionals = (
         { row, column }
       )),
     movedToCheck: movedToCheckDetection(
+      { board, pieces, selectedSquare, selectedPiece },
+      currentPlayer,
+      {
+        row,
+        column,
+      }
+    ),
+    putInCheck: inCheckDetection(
       { board, pieces, selectedSquare, selectedPiece },
       currentPlayer,
       {

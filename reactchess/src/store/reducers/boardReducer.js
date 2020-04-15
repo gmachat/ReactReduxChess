@@ -7,7 +7,7 @@ import {
   CLEAR_HOVER,
   UPDATE_SCORE,
   CASTLE,
-  CHECK_CHECK
+  CHECK_CHECK,
 } from '../actions/actionTypes';
 import { board } from '../pieces/startingBoard';
 import { squareVisualSelector } from '../../utils/squareVisualSelector';
@@ -15,6 +15,7 @@ import { boardChange } from '../../utils/boardChange';
 import { castle } from '../../utils/castle/castle';
 import pieces from '../pieces/pieces';
 import checkDetection from '../../utils/check/inCheckDetection';
+import setCheck from '../../utils/check/setCheck';
 
 const initialState = {
   selectedSquare: [null, null],
@@ -25,7 +26,7 @@ const initialState = {
   takenWhitePieces: [],
   takenBlackPieces: [],
   log: [],
-  pieces: pieces
+  pieces: pieces,
 };
 
 export default (state = initialState, action) => {
@@ -39,7 +40,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         hoveredPiece: state.board[payload.row][payload.column],
-        hoveredSquare: [payload.row, payload.column]
+        hoveredSquare: [payload.row, payload.column],
       };
     case CLEAR_HOVER:
       return { ...state, hoveredPiece: null, hoveredSquare: [null, null] };
@@ -64,10 +65,11 @@ export default (state = initialState, action) => {
         ...state,
         board: payload.newBoard,
         takenWhitePieces: payload.takenWhitePieces,
-        takenBlackPieces: payload.takenBlackPieces
+        takenBlackPieces: payload.takenBlackPieces,
       };
     case CHECK_CHECK:
-      return checkDetection(state, payload.checkPiece, payload.currentPlayer);
+      return setCheck(state, payload);
+
     default:
       return state;
   }

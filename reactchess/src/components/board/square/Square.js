@@ -168,13 +168,12 @@ const Square = ({
       clearHover();
     }
 
-    checkCheck(
-      {
-        row: event.target.dataset.row,
-        column: event.target.dataset.column,
-      },
-      currentPlayer
-    );
+    //check to see if king was put in check
+    if (conditional.putInCheck) {
+      checkCheck(currentPlayer, true, startingTime);
+    } else {
+      checkCheck(currentPlayer, false, startingTime);
+    }
     console.log('checking check');
   };
 

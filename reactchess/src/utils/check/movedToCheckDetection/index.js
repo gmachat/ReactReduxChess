@@ -27,17 +27,14 @@ const movedToCheckDetection = (state, currentPlayer, newMove) => {
   const knightsResult = movedToCheckDetectionKnights(king, newBoard);
 
   console.log('diagonal result', diagonalResult);
-  console.log('NSEW result', NSEWresult);
 
   checkResults = checkResults.concat(
     NSEWresult && NSEWresult,
     diagonalResult && diagonalResult,
     knightsResult && knightsResult
   );
-  console.log('checkResults', checkResults);
 
   if (checkResults.length > 0) {
-    console.log('CHECK RESULTSwhen hit', checkResults);
     return checkResults;
   } else {
     return null;

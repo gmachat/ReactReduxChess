@@ -1,5 +1,5 @@
 //RUNS AFTER THE PLAYER MOVES TO CHECK IF THEY MOVED INTO CHECK (RUNS BEFORE THE PIECCE IS OFFICIALLY MOVED)
-export const movedToCheckDetectionKnights = (king, updatedBoard) => {
+export const checkDetectionKnights = (king, updatedBoard) => {
   const length = updatedBoard.length;
   const kingRow = king.location[0];
   const kingColumn = king.location[1];

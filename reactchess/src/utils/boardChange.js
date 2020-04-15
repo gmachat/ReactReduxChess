@@ -27,9 +27,9 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
           : `${updatedPiece.name} moves to `
       }${
         state.board[row][column]
-          ? `${state.board[row][column].name} at Square-${letters[row]}${column} `
-          : `Square-${letters[row]}${column} `
-      }(${getTimeStamp(startTime)})`,
+          ? `${state.board[row][column].name} at Square-${letters[row]}${column}`
+          : `Square-${letters[row]}${column}`
+      } (${getTimeStamp(startTime)})`,
     ];
     updatedPieces[state.selectedPiece.id] = updatedPiece;
 
@@ -37,12 +37,10 @@ export const boardChange = (state, payload, startTime, currentPlayer) => {
     if (updatedPiece.type === 'king') {
       updatedPiece.location = [row, column];
     }
-    // const movedToCheck = movedToCheckDetection(state, currentPlayer);
 
-    // if (movedToCheck) {
-    //   console.log('in check cant proceeed');
-    //   return { ...state };
-    // }
+    updatedPieces[
+      `${currentPlayer === 'Black' ? 'black' : 'white'}King`
+    ].inCheck = false;
 
     return { ...state, board: newBoard, log: logEntry, pieces: updatedPieces };
   } else {
